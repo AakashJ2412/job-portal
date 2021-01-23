@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import { UserContext } from "../../UserContext";
 import { useContext } from 'react';
 
-export default class Home extends Component {
+export default class myapplications extends Component {
 
     static contextType = UserContext
 
@@ -61,7 +60,7 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div> myapplications
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Username: </label>
@@ -83,12 +82,6 @@ export default class Home extends Component {
                         <input type="submit" value="Login" className="btn btn-primary" />
                     </div>
                 </form>
-                <div class="">
-                    <p class="p-0 m-0">
-                        Not a member?
-                    </p>
-                    <Link to="/register" class="d-flex">Register as Applicant</Link>
-                </div>
             </div>
         )
     }

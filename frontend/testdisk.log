@@ -1,0 +1,207 @@
+
+
+Thu Jan 21 08:07:34 2021
+Command line: TestDisk
+
+TestDisk 7.0, Data Recovery Utility, April 2015
+Christophe GRENIER <grenier@cgsecurity.org>
+http://www.cgsecurity.org
+OS: Linux, kernel 5.3.0-40-generic (#32~18.04.1-Ubuntu SMP Mon Feb 3 14:05:59 UTC 2020) x86_64
+Compiler: GCC 7.2
+ext2fs lib: 1.44.1, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.0
+/dev/sda: LBA, LBA48 support
+/dev/sda: size       1953525168 sectors
+/dev/sda: user_max   1953525168 sectors
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+Hard disk list
+Disk /dev/sda - 1000 GB / 931 GiB - CHS 121601 255 63, sector size=512 - WDC WD10SPZX-24Z10, S/N:WD-WXP1A68K1P2C, FW:04.01A04
+
+Partition table type (auto): EFI GPT
+Disk /dev/sda - 1000 GB / 931 GiB - WDC WD10SPZX-24Z10
+Partition table type: EFI GPT
+
+Interface Advanced
+hdr_size=92
+hdr_lba_self=1
+hdr_lba_alt=1953525167 (expected 1953525167)
+hdr_lba_start=34
+hdr_lba_end=1953525134
+hdr_lba_table=2
+hdr_entries=128
+hdr_entsz=128
+check_part_gpt failed for partition
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 1 P MS LDM MetaData               34       2081       2048 [LDM metadata partition]
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 3 P MS LDM Data                32768 1566091263 1566058496 [LDM data partition]
+ 4 P EFI System            1566091264 1567141887    1050624 [EFI System Partition]
+ 5 P Unknown               1567141888 1627142143   60000256
+ 6 P Linux Swap            1627142144 1659142143   32000000
+ 7 P Unknown               1659142144 1953523711  294381568
+
+Analyse Disk /dev/sda - 1000 GB / 931 GiB - CHS 121601 255 63
+hdr_size=92
+hdr_lba_self=1
+hdr_lba_alt=1953525167 (expected 1953525167)
+hdr_lba_start=34
+hdr_lba_end=1953525134
+hdr_lba_table=2
+hdr_entries=128
+hdr_entsz=128
+check_part_gpt failed for partition
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+Current partition structure:
+ 1 P MS LDM MetaData               34       2081       2048 [LDM metadata partition]
+No FAT, NTFS, ext2, JFS, Reiser, cramfs or XFS marker
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 3 P MS LDM Data                32768 1566091263 1566058496 [LDM data partition]
+ 4 P EFI System            1566091264 1567141887    1050624 [EFI System Partition]
+ 5 P Unknown               1567141888 1627142143   60000256
+ 6 P Linux Swap            1627142144 1659142143   32000000
+ 7 P Unknown               1659142144 1953523711  294381568
+
+search_part()
+Disk /dev/sda - 1000 GB / 931 GiB - CHS 121601 255 63
+NTFS at 2/10/9
+filesystem size           1534058496
+sectors_per_cluster       8
+mft_lcn                   786432
+mftmirr_lcn               2
+clusters_per_mft_record   -10
+clusters_per_index_record 1
+NTFS part_offset=16777216, part_size=785437949952, sector_size=512
+NTFS partition cannot be added (part_offset<part_size).
+NTFS at 2/10/9
+filesystem size           1534058496
+sectors_per_cluster       8
+mft_lcn                   786432
+mftmirr_lcn               2
+clusters_per_mft_record   -10
+clusters_per_index_record 1
+     MS Data                    32768 1534091263 1534058496
+     NTFS, blocksize=4096, 785 GB / 731 GiB
+NTFS at 95492/194/63
+filesystem size           32000000
+sectors_per_cluster       8
+mft_lcn                   786432
+mftmirr_lcn               2
+clusters_per_mft_record   -10
+clusters_per_index_record 1
+     MS Data               1502091265 1534091264   32000000
+     NTFS found using backup sector, blocksize=4096, 16 GB / 15 GiB
+NTFS at 95492/194/63
+filesystem size           32000000
+sectors_per_cluster       8
+mft_lcn                   786432
+mftmirr_lcn               2
+clusters_per_mft_record   -10
+clusters_per_index_record 1
+     MS Data               1534091264 1566091263   32000000
+     NTFS, blocksize=4096, 16 GB / 15 GiB
+FAT32 at 97484/171/32
+FAT1 : 32-1055
+FAT2 : 1056-2079
+start_rootdir : 2080 root cluster : 2
+Data : 2080-1050623
+sectors : 1050624
+cluster_size : 8
+no_of_cluster : 131068 (2 - 131069)
+fat_length 1024 calculated 1024
+set_FAT_info: name from BS used
+
+FAT32 at 97484/171/32
+     MS Data               1566091264 1567141887    1050624 [NO NAME]
+     FAT32, blocksize=4096, 537 MB / 513 MiB
+
+recover_EXT2: s_block_group_nr=0/228, s_mnt_count=148/4294967295, s_blocks_per_group=32768, s_inodes_per_group=8192
+recover_EXT2: s_blocksize=4096
+recover_EXT2: s_blocks_count 7500032
+recover_EXT2: part_size 60000256
+     MS Data               1567141888 1627142143   60000256
+     ext4 blocksize=4096 Large_file Sparse_SB Recover, 30 GB / 28 GiB
+     Linux Swap            1627142144 1659142127   31999984
+     SWAP2 version 1, pagesize=4096, 16 GB / 15 GiB
+
+recover_EXT2: s_block_group_nr=0/1122, s_mnt_count=148/4294967295, s_blocks_per_group=32768, s_inodes_per_group=8192
+recover_EXT2: s_blocksize=4096
+recover_EXT2: s_blocks_count 36797696
+recover_EXT2: part_size 294381568
+     MS Data               1659142144 1953523711  294381568
+     ext4 blocksize=4096 Large_file Sparse_SB Recover, 150 GB / 140 GiB
+
+Results
+     MS Data                    32768 1534091263 1534058496
+     NTFS, blocksize=4096, 785 GB / 731 GiB
+     MS Data               1502091265 1534091264   32000000
+     NTFS found using backup sector, blocksize=4096, 16 GB / 15 GiB
+     MS Data               1534091264 1566091263   32000000
+     NTFS, blocksize=4096, 16 GB / 15 GiB
+   P MS Data               1566091264 1567141887    1050624 [NO NAME]
+     FAT32, blocksize=4096, 537 MB / 513 MiB
+   P MS Data               1567141888 1627142143   60000256
+     ext4 blocksize=4096 Large_file Sparse_SB Recover, 30 GB / 28 GiB
+   P Linux Swap            1627142144 1659142127   31999984
+     SWAP2 version 1, pagesize=4096, 16 GB / 15 GiB
+   P MS Data               1659142144 1953523711  294381568
+     ext4 blocksize=4096 Large_file Sparse_SB Recover, 150 GB / 140 GiB
+
+Hint for advanced users. dmsetup may be used if you prefer to avoid to rewrite the partition table for the moment:
+echo "0 1534058496 linear /dev/sda 32768" | dmsetup create test0
+echo "0 32000000 linear /dev/sda 1502091265" | dmsetup create test1
+echo "0 32000000 linear /dev/sda 1534091264" | dmsetup create test2
+echo "0 1050624 linear /dev/sda 1566091264" | dmsetup create test3
+echo "0 60000256 linear /dev/sda 1567141888" | dmsetup create test4
+echo "0 31999984 linear /dev/sda 1627142144" | dmsetup create test5
+echo "0 294381568 linear /dev/sda 1659142144" | dmsetup create test6
+
+interface_write()
+ 1 P MS Data                    32768 1534091263 1534058496
+ 2 P MS Data               1566091264 1567141887    1050624 [NO NAME]
+ 3 P MS Data               1567141888 1627142143   60000256
+ 4 P Linux Swap            1627142144 1659142127   31999984
+ 5 P MS Data               1659142144 1953523711  294381568
+simulate write!
+
+Interface Advanced
+hdr_size=92
+hdr_lba_self=1
+hdr_lba_alt=1953525167 (expected 1953525167)
+hdr_lba_start=34
+hdr_lba_end=1953525134
+hdr_lba_table=2
+hdr_entries=128
+hdr_entsz=128
+check_part_gpt failed for partition
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 1 P MS LDM MetaData               34       2081       2048 [LDM metadata partition]
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 3 P MS LDM Data                32768 1566091263 1566058496 [LDM data partition]
+ 4 P EFI System            1566091264 1567141887    1050624 [EFI System Partition]
+ 5 P Unknown               1567141888 1627142143   60000256
+ 6 P Linux Swap            1627142144 1659142143   32000000
+ 7 P Unknown               1659142144 1953523711  294381568
+Partition table type (auto): EFI GPT
+Disk /dev/sda - 1000 GB / 931 GiB - WDC WD10SPZX-24Z10
+Partition table type: EFI GPT
+
+Interface Advanced
+hdr_size=92
+hdr_lba_self=1
+hdr_lba_alt=1953525167 (expected 1953525167)
+hdr_lba_start=34
+hdr_lba_end=1953525134
+hdr_lba_table=2
+hdr_entries=128
+hdr_entsz=128
+check_part_gpt failed for partition
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 1 P MS LDM MetaData               34       2081       2048 [LDM metadata partition]
+ 2 P MS Reserved                 2082      32767      30686 [Microsoft reserved partition]
+ 3 P MS LDM Data                32768 1566091263 1566058496 [LDM data partition]
+ 4 P EFI System            1566091264 1567141887    1050624 [EFI System Partition]
+ 5 P Unknown               1567141888 1627142143   60000256
+ 6 P Linux Swap            1627142144 1659142143   32000000
+ 7 P Unknown               1659142144 1953523711  294381568
+
+TestDisk exited normally.
