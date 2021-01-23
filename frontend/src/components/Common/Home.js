@@ -4,6 +4,8 @@ import axios from 'axios';
 import { UserContext } from "../../UserContext";
 import { useContext } from 'react';
 
+var string = "MyString"
+
 export default class Home extends Component {
 
     static contextType = UserContext
@@ -20,8 +22,18 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-
+        this.setState({
+            name: 'Vikrant'
+        })
     }
+
+    componentDidUpdate() {
+        if (this.state.name != 'Kanish')
+            this.setState({
+                name: 'Kanish'
+            })
+    }
+
 
     onChangeEmail(event) {
         this.setState({ email: event.target.value });
@@ -42,8 +54,8 @@ export default class Home extends Component {
             .then((res) => {
                 this.context.setUser(res.data.token, true, newUser.email, res.data.type);
                 localStorage.setItem('payload', res.data.token);
-                if(this.context.type === 'app') {
-                    this.props.history.push('/dashboardapp') 
+                if (this.context.type === 'app') {
+                    this.props.history.push('/dashboardapp')
                 }
                 else if (this.context.type === 'rec') {
                     this.props.history.push('/dashboardrec')
