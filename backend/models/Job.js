@@ -36,13 +36,11 @@ const JobSchema = new Schema({
 		required: true,
 	},
 	skills:{
-		type: [String],
+		type: [{title:{type:String,required:true}}],
 		required: true
 	},
 	type_job:{
-		type: Number,			// 1 = Full-time, 2 = Part-time, 3 = Work from home
-		min:1,
-		max:3,
+		type: String,
 		required: true
 	},
 	duration:{
@@ -67,11 +65,15 @@ const JobSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	app_id:{
-		type: [String]
+	cur_app:{
+		type: Number,
+		required: true,
+		default: 0
 	},
-	acc_id:{
-		type: [String]
+	cur_pos:{
+		type: Number,
+		required: true,
+		default: 0
 	}
 
 });

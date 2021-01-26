@@ -22,16 +22,6 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            name: 'Vikrant'
-        })
-    }
-
-    componentDidUpdate() {
-        if (this.state.name != 'Kanish')
-            this.setState({
-                name: 'Kanish'
-            })
     }
 
 
@@ -58,6 +48,7 @@ export default class Home extends Component {
                     this.props.history.push('/dashboardapp')
                 }
                 else if (this.context.type === 'rec') {
+                    console.log('going rec')
                     this.props.history.push('/dashboardrec')
                 }
                 console.log(this.context.type)
@@ -66,7 +57,6 @@ export default class Home extends Component {
                 alert(error.response.data.error);
             });
         this.setState({
-            email: '',
             password: ''
         });
     }
@@ -80,7 +70,7 @@ export default class Home extends Component {
                         <input type="email"
                             className="form-control"
                             value={this.state.email}
-                            onChange={this.onChangeEmail}
+                            onChange={this.onChangeEmail} required
                         />
                     </div>
                     <div className="form-group">
@@ -88,18 +78,18 @@ export default class Home extends Component {
                         <input type="password"
                             className="form-control"
                             value={this.state.password}
-                            onChange={this.onChangePassword}
+                            onChange={this.onChangePassword} required
                         />
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Login" className="btn btn-primary" />
                     </div>
                 </form>
-                <div class="">
-                    <p class="p-0 m-0">
+                <div>
+                    <p className="p-0 m-0">
                         Not a member?
                     </p>
-                    <Link to="/register" class="d-flex">Register as Applicant</Link>
+                    <Link to="/register" className="d-flex">Register</Link>
                 </div>
             </div>
         )

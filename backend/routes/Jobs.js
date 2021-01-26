@@ -8,6 +8,8 @@ const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 const Applicant = require("../models/Applicant");
 const Recruiter = require("../models/Recruiter");
 const Job = require("../models/Job");
+const Application = require("../models/Application");
+const { application } = require("express");
 
 // GET request 
 // Getting all the users
@@ -19,6 +21,31 @@ router.get("/job", function (req, res) {
             res.json(users);
         }
     });
+});
+
+router.get("/appl", function (req, res) {
+    Application.find(function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    });
+});
+
+router.get("/appjob", async (req, res) => {
+    appl = await Application.find({ applicant: req.headers.email });
+    res.json(appl)
+});
+
+router.get("/titlejob", async (req, res) => {
+    appl = await Application.find({ job: req.headers.title });
+    res.json(appl)
+});
+
+router.get("/getjobrec", async (req, res) => {
+    appl = await Job.find({ rec_email: req.headers.email });
+    res.json(appl)
 });
 
 router.get("/rec", function (req, res) {
@@ -41,19 +68,48 @@ router.get("/app", function (req, res) {
     });
 });
 
-router.get("/fuz_search", function (req, res) {
-    Job.findOne({ title: req.body.title }, function (err, docs) {
-        if (docs.n != 0) {
-            return res.status(404).json({
-                error: "Job with same title exists",
-            });
-        }
+router.get("/getjob", async (req, res) => {
+    console.log(req.headers.title)
+    job = await Job.findOne({ title: req.headers.title });
+    if (!job) {
+        return res.status(404).json({
+            error: "Job not Found",
+        });
+    } else {
+        res.json(job);
     }
-    );
-    Job.fuzzySearch(req.body.title, function (err, srch) {
+});
+
+router.get("/getapp", async (req, res) => {
+    console.log(req.headers.email)
+    applicant = await Applicant.findOne({ email: req.headers.email });
+    if (!applicant) {
+        return res.status(404).json({
+            error: "Applicant not Found",
+        });
+    } else {
+        res.json(applicant);
+    }
+});
+
+router.get("/getrec", async (req, res) => {
+    console.log(req.headers.email)
+    recruiter = await Recruiter.findOne({ email: req.headers.email });
+    if (!recruiter) {
+        return res.status(404).json({
+            error: "Recruiter not Found",
+        });
+    } else {
+        //console.log(recruiter)
+        res.json(recruiter);
+    }
+});
+
+router.get("/fuz_search", function (req, res) {
+    Job.fuzzySearch(req.headers.title, function (err, srch) {
         if (err) {
             return res.status(404).json({
-                error: "Job with same title exists",
+                error: "Error while searching",
             });
         } else {
             res.json(srch)
@@ -84,6 +140,7 @@ router.post("/registerjob", (req, res) => {
         pos_no: req.body.pos_no,
         deadline: req.body.deadline,
         skills: req.body.skills,
+        type_job: req.body.type_job,
         duration: req.body.duration,
         salary: req.body.salary,
     });
@@ -121,7 +178,8 @@ router.post("/registerapp", (req, res) => {
         email: req.body.email,
         password: req.body.password,
         education: req.body.education,
-        skills: req.body.skills
+        skills: req.body.skills,
+        picture: req.body.picture
     });
 
     newApplicant.save()
@@ -132,6 +190,44 @@ router.post("/registerapp", (req, res) => {
             res.status(400).send(err);
         });
 });
+
+router.post("/apply", (req, res) => {
+    Application.findOne({ applicant: req.body.email, job: req.body.title }, function (err, docs) {
+        if (docs === null) {
+            const newApplication = new Application({
+                applicant: req.body.email,
+                job: req.body.title,
+                SOP: req.body.SOP,
+                rec_name: req.body.rec_name,
+                salary: req.body.salary,
+                joindate: req.body.joindate
+            });
+            Job.findOneAndUpdate({ title: req.body.title },
+                { $inc: { 'cur_app': 1 } },
+                { new: true, useFindAndModify: false }, function (err, upd) {
+                    if (err) {
+                        return res.status(404).json({
+                            error: "Job count not updated",
+                        });
+                    }
+                });
+            newApplication.save()
+                .then(user => {
+                    res.status(200).json(user);
+                })
+                .catch(err => {
+                    res.status(400).send(err);
+                });
+        }
+        else {
+            return res.status(404).json({
+                error: "Application already exists",
+            });
+        }
+    });
+});
+
+
 
 router.post("/registerrec", (req, res) => {
     Applicant.findOne({ email: req.body.email }, function (erra, docsa) {
@@ -206,7 +302,7 @@ router.post("/login", (req, res) => {
                                 (err, token) => {
                                     res.json({
                                         success: true,
-                                        token: "Bearer " + token,
+                                        token: token,
                                         type: "rec"
                                     });
                                 }
@@ -236,7 +332,7 @@ router.post("/login", (req, res) => {
                         (err, token) => {
                             res.json({
                                 success: true,
-                                token: "Bearer " + token,
+                                token: token,
                                 type: "app"
                             });
                         }
@@ -252,17 +348,19 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/checklogin", (req, res) => {
-    jwt.verify(req.body.token, keys.secretOrKey, function(err, decoded) {
-        if (err) {
+    jwt.verify(req.body.token, keys.secretOrKey, function (err, decoded) {
+        if (decoded.type === 'app' || decoded.type === 'rec') {
+            res.json({
+                token: req.body.token,
+                email: decoded.email,
+                type: decoded.type
+            });
+        }
+        else {
             return res.status(404).json({
                 error: "Token not found",
             });
         }
-        res.json({
-            token: req.body.token,
-            email: decoded.email,
-            type: decoded.type
-        });
     });
 });
 
@@ -273,7 +371,7 @@ router.put("/editjob", (req, res) => {
         app_no: req.body.app_no,
         pos_no: req.body.pos_no,
         deadline: req.body.deadline
-    }, function (err) {
+    }, { useFindAndModify: false }, function (err) {
         if (err) {
             return res.status(404).json({
                 error: "Job not found",
@@ -285,51 +383,92 @@ router.put("/editjob", (req, res) => {
     });
 });
 
+router.put("/updstat", (req, res) => {
+    Application.findOneAndUpdate({ applicant: req.body.email, job: req.body.title }, {
+        status: req.body.status
+    }, { useFindAndModify: false }, function (err) {
+        if (err) {
+            return res.status(404).json({
+                error: "Application not found",
+            });
+        }
+        else {
+            if (req.body.status === "Accepted") {
+                Job.findOneAndUpdate({ title: req.body.title },
+                    { $inc: { 'cur_pos': 1 } },
+                    { new: true, useFindAndModify: false }, function (err, upd) {
+                        if (err) {
+                            return res.status(404).json({
+                                error: "Job count not updated",
+                            });
+                        } else {
+                            res.send("Successfully updated application status");
+                        }
+                    });
+            } else {
+                res.send("Successfully updated application status");
+            }
+        }
+    });
+});
+
 router.put("/editapp", (req, res) => {
     Applicant.findOneAndUpdate({ email: req.body.email }, {
         name: req.body.name,
         education: req.body.education,
-        skills: req.body.skills
-    }, { new: true }, function (err) {
+        skills: req.body.skills,
+        picture: req.body.picture
+    }, { new: true, useFindAndModify: false }, function (err, upd) {
+        console.log(err)
         if (err) {
             return res.status(404).json({
-                error: "Applicant not found",
+                error: "Applicant not found for edit",
             });
         }
         else {
-            res.send("Successfully edited details")
+            res.json(upd)
         }
     });
 });
 
 router.put("/editrec", (req, res) => {
+    //console.log(req.body.email)
     Recruiter.findOneAndUpdate({ email: req.body.email }, {
         name: req.body.name,
         ph_no: req.body.ph_no,
         bio: req.body.bio
-    }, function (err) {
+    }, { new: true, useFindAndModify: false }, function (err, upd) {
         if (err) {
             return res.status(404).json({
-                error: "Recruiter not found",
+                error: "Recruiter not found for edit",
             });
         }
         else {
-            res.send("Successfully edited details")
+            res.json(upd)
         }
     });
 });
 
 // DELETE request
 
-router.delete("/deljob", (req, res) => {
-    Job.deleteOne({ title: req.body.title }, function (err) {
+router.post("/deljob", (req, res) => {
+    Job.deleteOne({ title: req.body.title }, function (err, docs) {
         if (err) {
             return res.status(404).json({
                 error: "Job not found",
             });
         }
         else {
-            res.send("Successfully deleted job")
+            Application.updateMany({ job: req.body.title }, { status: 'Deleted' }, function (erru, docsu) {
+                if (err) {
+                    return res.status(404).json({
+                        error: "Status failed",
+                    });
+                }
+                else {
+                    res.send("Successfully deleted job");
+                }
+            });
         }
     });
 });

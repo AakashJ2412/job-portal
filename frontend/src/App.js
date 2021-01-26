@@ -14,6 +14,9 @@ import myapplications from './components/Applicant/myapplications'
 import dashboardrec from './components/Recruiter/dashboardrec'
 import createjob from './components/Recruiter/createjob'
 import acceptedapp from './components/Recruiter/acceptedapp'
+import activejob from './components/Recruiter/activejob'
+import jobapp from './components/Applicant/jobapp'
+import currentapp from './components/Recruiter/currentapp'
 
 class App extends Component {
 
@@ -22,10 +25,12 @@ class App extends Component {
   }
 
   state = {
+    loadvar: false,
     token: null,
     signcheck: false,
     email: null,
-    type: null
+    type: null,
+    details: null
   }
 
   setUser = (token, boolchk, email, type) => {
@@ -46,45 +51,68 @@ class App extends Component {
     });
     localStorage.removeItem('payload');
     console.log('logout');
-    this.props.history.push('/');
   }
 
-  checklogin = () => {
-    const payload = localStorage.getItem('payload');
-    if (payload) {
-      axios.post('http://localhost:4000/job/checklogin', payload)
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((error) => {
-          alert(error.response.data.error);
-        });
+  checklogin = async () => {
+    try {
+      console.log(this.state)
+      const payload = localStorage.getItem('payload');
+      if (payload) {
+        const res = await axios.post('http://localhost:4000/job/checklogin', { token: payload });
+        if (res.data) {
+          console.log(res)
+          this.setState({
+            token: res.data.token,
+            signcheck: true,
+            email: res.data.email,
+            type: res.data.type
+          });
+          console.log(this.state)
+        }
+      }
+    }
+    catch (error) {
+    }
+    finally {
+      this.setState({ loadvar: true })
     }
   }
 
   componentDidMount() {
+    console.log('start app')
     this.checklogin()
+    console.log('end app')
   }
 
   render() {
-    const { token, signcheck, email, type } = this.state
+    const { token, signcheck, email, type, details } = this.state
     const { setUser, logout } = this
     return (
       <Router>
         <div className="container">
           <UserContext.Provider value={{ token, signcheck, email, type, setUser, logout }}>
-            <Navbar />
-            <br />
-            <Route path="/" exact component={Home} />
-            <Route path="/users" exact component={UsersList} />
-            <Route path="/register" component={Register} />
-            <Route path="/dashboardapp" component={dashboardapp} />
-            <Route path="/dashboardrec" component={dashboardrec} />
-            <Route path="/joblisting" component={joblisting} />
-            <Route path="/myapplications" component={myapplications} />
-            <Route path="/createjob" component={createjob} />
-            <Route path="/acceptedadd" component={acceptedapp} />
-            <Route path="/profile" component={Profile} />
+            {this.state.loadvar ? <div>
+              <Navbar />
+              <br />
+              <Route path="/" exact component={Home} />
+              <Route path="/users" exact component={UsersList} />
+              <Route path="/register" component={Register} />
+              <Route path="/dashboardapp" component={dashboardapp} />
+              <Route path="/dashboardrec" component={dashboardrec} />
+              <Route path="/joblisting" component={joblisting} />
+              <Route path="/myapplications" component={myapplications} />
+              <Route path="/createjob" component={createjob} />
+              <Route path="/activejob" component={activejob} />
+              <Route path="/acceptedapp" component={acceptedapp} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/jobapp" component={jobapp} />
+              <Route path="/currentapp" component={currentapp} />
+            </div>
+              :
+              <div>
+                Loading...
+              </div>
+            }
           </UserContext.Provider>
         </div>
       </Router>

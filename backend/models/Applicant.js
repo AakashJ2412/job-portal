@@ -18,7 +18,7 @@ const ApplicantSchema = new Schema({
         required : true
     },
     education:{
-		type: [{inst_name:{type:String,required:true},start_year:{type:Number,min:1900,max:2100,required:true},end_year:{type:Number,min:1900,max:2100}}],
+		type: [{inst_name:{type:String,required:true},start_year:{type:Number,min:1900,max:2100,required:true},end_year:{type:Number}}],
 		required: true
     },
     rating:{
@@ -33,9 +33,12 @@ const ApplicantSchema = new Schema({
 		default:0
 	},
 	skills:{
-		type: [String],
+		type: [{title:{type:String,required:true}}],
 		required: true
 	},
+	picture: {
+		type: String
+	}
 });
 
 ApplicantSchema.pre('save', function(next){

@@ -20,13 +20,16 @@ export default class NavBar extends Component {
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav mr-auto">
                                 <li className="navbar-item">
-                                    <Link to="/createjob" className="nav-link">Job listings</Link>
+                                    <Link to="/createjob" className="nav-link">Add Job</Link>
                                 </li>
                                 <li className="navbar-item">
-                                    <Link to="/acceptedapp" className="nav-link">Applicants</Link>
+                                    <Link to="/activejob" className="nav-link">Job Postings</Link>
                                 </li>
                                 <li className="navbar-item">
-                                    <button onClick={this.context.logout} className="nav-link">Logout</button>
+                                    <Link to="/acceptedapp" className="nav-link">Recruits</Link>
+                                </li>
+                                <li className="navbar-item">
+                                <Link to="/" onClick={this.context.logout} className="nav-link">Logout</Link>
                                 </li>
                             </ul>
                         </div>
@@ -48,7 +51,7 @@ export default class NavBar extends Component {
                                     <Link to="/myapplications" className="nav-link">My Applications</Link>
                                 </li>
                                 <li className="navbar-item">
-                                <button onClick={this.context.logout} className="nav-link">Logout</button>
+                                    <Link to="/" onClick={this.context.logout} className="nav-link">Logout</Link>
                                 </li>
                             </ul>
                         </div>
