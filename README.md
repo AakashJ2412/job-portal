@@ -1,32 +1,14 @@
-# MERN Stack Boilerplate
+# Job Portal
 
-## Installations
+This is a job portal webapp that is developed using the MERN stack. There are two types of users - recruiters and applicants. Recruiters can create, edit, and delete job listings, each with their respective parameters, review applications by applicants and choose to shortlist, accept, or reject them, and have various sort/filter functionalities for their employees. Applicants can view all active job listings, apply for a posting, and review their applications.
 
-### Node
+## How to run
 
-* For Linux:
-```
-curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
+### Prerequisites
 
-* For Mac:
-```
-brew install node
-```
+* It is assumed that the system has MongoDB community edition downloaded, and nodejs setup, as the webapp uses npm functionalities for both expressJS and react.
 
-### MongoDB
-
-Install the community edition [here](https://docs.mongodb.com/manual/installation/#mongodb-community-edition-installation-tutorials).
-
-
-### React
-
-```
-npm install -g create-react-app
-```
-
-## Running the boilerplate
+### Run the Webapp
 
 * Run Mongo daemon:
 ```
